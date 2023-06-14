@@ -1,6 +1,6 @@
-
+import React, { useRef } from 'react';
+import html2pdf from 'html2pdf.js';
 import { useState } from "react";
-
 import Footer from "./components/Footer";
 import Table from "./components/Table";
 import Notes from "./components/Notes";
@@ -9,41 +9,47 @@ import ClientDetails from "./components/ClientDetails";
 import MainDetails from "./components/MainDetails";
 import Dates from "./components/Dates";
 
-
 function App() {
-  const [showInvoice, setShowInvoice] = useState(false)
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")
-  const [address, setAddress] = useState("")
-  const [bankName, setBankName] = useState("")
-  const [account, setAccount] = useState("")
-  const [clientName, setClientName] = useState("")
-  const [clientAddress, setClientAddress] = useState("")
-  const [website, setWebsite] = useState("")
-  const [invoiceNumber, setInvoiceNumber] = useState("")
-  const [invoiceDate, setInvoiceDate] = useState("")
-  const [dueDate, setDueDate] = useState("")
-  const [notes, setNotes] = useState("")
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [account, setAccount] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [clientAddress, setClientAddress] = useState("");
+  const [website, setWebsite] = useState("");
+  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [invoiceDate, setInvoiceDate] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [notes, setNotes] = useState("");
+
+  const handleDownload = () => {
+    const element = document.getElementById("root");
+    if (element) {
+      html2pdf().from(element).save();
+    }
+  };
 
 
-  const handlePrint = () => {
-    window.print()
-  }
+
   return (
     <>
-      <main className="m-5 p-5  xl: max-w-4xl xl:mx-auto bg-white rounded shadow">
+      {/*  Invoice content */}
+
+
+      <main className="m-5 p-5 md:max-w-xl md:mx-auto lg:max-w-2xl xl:max-w-4xl bg-white rounded shadow">
         {showInvoice ? <div>
 
-          <Header handlePrint={handlePrint} />
+          {/* <Header handlePrint={handlePrint} /> */}
+          <Header handleDownload={handleDownload} />
           <MainDetails name={name} address={address} />
           <ClientDetails clientName={clientName} clientAddress={clientAddress} />
           <Dates dueDate={dueDate} invoiceDate={invoiceDate} invoiceNumber={invoiceNumber} />
-
           <Table />
           <Notes notes={notes} />
           <Footer name={name} address={address} website={website} email={email} phone={phone} bankName={bankName} account={account} />
-
           <button onClick={() => setShowInvoice(false)} className=" mt-5 bg-blue-500 text-white font-bold py-2 px-8 rounded shadow border-2 border-blue-500 hover:bg-transparent hover:text-blue-500 transition-all duration-300"> Edit Info </button>
         </div> : (
           <>
@@ -192,6 +198,7 @@ function App() {
         )}
 
       </main>
+
     </>
   )
 }
